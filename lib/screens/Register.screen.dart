@@ -186,7 +186,7 @@ class _RegisterState extends State<Register> {
                       Button(name: 'Sign up', onPressed: validation),
                       Account(
                         text: 'I have not account !  ',
-                        btntext: 'Sign up',
+                        btntext: 'Login',
                         ctx: context,
                         route: '/Login',
                       )

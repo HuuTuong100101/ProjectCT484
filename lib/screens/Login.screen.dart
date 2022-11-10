@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/widgets/Button.dart';
 import 'package:goldshop/widgets/Account.dart';
@@ -13,16 +14,30 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 String role =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
+// ignore: unnecessary_new
 RegExp regExp = new RegExp(role);
 bool obserText = true;
+String email = '';
+String password = '';
 
 class _LoginState extends State<Login> {
-  void validation() {
+  void validation() async {
+    // ignore: no_leading_underscores_for_local_identifiers
     final FormState? _form = _formKey.currentState;
     if (_form!.validate()) {
-      print("YES");
-    } else {
-      print("NO");
+      try {
+        final FirebaseAuth userCredential = FirebaseAuth.instance;
+        await userCredential.signInWithEmailAndPassword(
+            email: email.trim(), password: password.trim());
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Đăng nhập thành công")));
+      } on FirebaseAuthException catch (e) {
+        // ignore: unused_local_variable
+        var content = e.message;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(content!)));
+      }
     }
   }
 
@@ -43,7 +58,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Login",
                         style: TextStyle(
                             fontSize: 50,
@@ -57,9 +72,14 @@ class _LoginState extends State<Login> {
                           } else if (!regExp.hasMatch(value!)) {
                             return "Email không hợp lệ";
                           }
-                          // return '';
+                          return null;
                         },
-                        decoration: InputDecoration(
+                        onChanged: ((value) {
+                          setState(() {
+                            email = value;
+                          });
+                        }),
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: "Email",
                           hintStyle: TextStyle(color: Colors.black),
@@ -74,12 +94,17 @@ class _LoginState extends State<Login> {
                           if (value!.length < 8) {
                             return "Quá ngắn";
                           }
-                          // return '';
+                          return null;
                         },
+                        onChanged: ((value) {
+                          setState(() {
+                            password = value;
+                          });
+                        }),
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             hintText: "Password",
-                            hintStyle: TextStyle(color: Colors.black),
+                            hintStyle: const TextStyle(color: Colors.black),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
