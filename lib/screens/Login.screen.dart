@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:goldshop/widgets/Button.dart';
+import 'package:goldshop/widgets/Account.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -6,12 +8,14 @@ class Login extends StatefulWidget {
   @override
   State<Login> createState() => _LoginState();
 }
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String role =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-  RegExp regExp = new RegExp(role);
-  bool obserText = true;
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+String role =
+    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+RegExp regExp = new RegExp(role);
+bool obserText = true;
+
 class _LoginState extends State<Login> {
   void validation() {
     final FormState? _form = _formKey.currentState;
@@ -21,6 +25,7 @@ class _LoginState extends State<Login> {
       print("NO");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,44 +87,17 @@ class _LoginState extends State<Login> {
                                 });
                                 FocusScope.of(context).unfocus();
                               },
-                              child: Icon(
-                                obserText == true
-                                ? Icons.visibility : Icons.visibility_off
-                              ),
+                              child: Icon(obserText == true
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
                             )),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: TextButton(
-                          style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.lightBlue),
-                          ),
-                          onPressed: () {
-                            validation();
-                          },
-                          child: Text('Login'),
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text("I have not account !    "),
-                          GestureDetector(
-                            child: Text(
-                              "Sign up",
-                              style: TextStyle(
-                                  color: Colors.lightBlue,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/Register');
-                            },
-                          )
-                        ],
+                      Button(name: 'Login', onPressed: validation),
+                      Account(
+                          text: 'I have not account !  ',
+                          btntext: 'Sign up',
+                          ctx: context,
+                          route: '/Register',
                       )
                     ],
                   ),

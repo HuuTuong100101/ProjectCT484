@@ -1,6 +1,11 @@
 // ignore_for_file: unnecessary_new
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:goldshop/widgets/Button.dart';
+// ignore: unnecessary_import
+import 'package:flutter/services.dart';
+
+import '../widgets/Account.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -10,18 +15,30 @@ class Register extends StatefulWidget {
 }
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 String role =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 RegExp regExp = new RegExp(role);
 bool obserText = true;
+String email = '';
+String password = '';
 
 class _RegisterState extends State<Register> {
-  void validation() {
-    final FormState? _form = _formKey.currentState;
-    if (_form!.validate()) {
-      print("YES");
-    } else {
-      print("NO");
+  void validation() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final FirebaseAuth userCredential = FirebaseAuth.instance;
+        await userCredential.createUserWithEmailAndPassword(
+            email: email.trim(), password: password.trim());
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Đăng ký tài khoản thành công")));
+      } on FirebaseAuthException catch (e) {
+        // ignore: unused_local_variable
+        var content = e.message;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(content!)));
+      }
     }
   }
 
@@ -35,7 +52,7 @@ class _RegisterState extends State<Register> {
           child: Container(
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Container(
@@ -44,7 +61,7 @@ class _RegisterState extends State<Register> {
                   // color: Colors.lightBlue,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(
                         "Đăng Ký",
                         style: TextStyle(
@@ -63,7 +80,7 @@ class _RegisterState extends State<Register> {
                   height: 420,
                   width: double.infinity,
                   // color: Colors.lightBlue,
-                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -79,13 +96,13 @@ class _RegisterState extends State<Register> {
                         },
                         decoration: InputDecoration(
                             hintText: "Username",
-                            hintStyle: TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(),
+                            hintStyle: const TextStyle(color: Colors.black),
+                            border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                               },
-                              child: Icon(Icons.people),
+                              child: const Icon(Icons.people),
                             )),
                       ),
                       TextFormField(
@@ -97,15 +114,20 @@ class _RegisterState extends State<Register> {
                           }
                           // return '';
                         },
+                        onChanged: ((value) {
+                          setState(() {
+                            email = value;
+                          });
+                        }),
                         decoration: InputDecoration(
                             hintText: "Email",
-                            hintStyle: TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(),
+                            hintStyle: const TextStyle(color: Colors.black),
+                            border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                               },
-                              child: Icon(Icons.email),
+                              child: const Icon(Icons.email),
                             )),
                       ),
                       TextFormField(
@@ -119,10 +141,15 @@ class _RegisterState extends State<Register> {
                           }
                           // return '';
                         },
+                        onChanged: ((value) {
+                          setState(() {
+                            password = value;
+                          });
+                        }),
                         decoration: InputDecoration(
                             hintText: "Password",
-                            hintStyle: TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(),
+                            hintStyle: const TextStyle(color: Colors.black),
+                            border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -130,10 +157,9 @@ class _RegisterState extends State<Register> {
                                 });
                                 FocusScope.of(context).unfocus();
                               },
-                              child: Icon(
-                                obserText == true
-                                ? Icons.visibility : Icons.visibility_off
-                              ),
+                              child: Icon(obserText == true
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
                             )),
                       ),
                       TextFormField(
@@ -148,47 +174,21 @@ class _RegisterState extends State<Register> {
                         },
                         decoration: InputDecoration(
                             hintText: "Phone",
-                            hintStyle: TextStyle(color: Colors.black),
-                            border: OutlineInputBorder(),
+                            hintStyle: const TextStyle(color: Colors.black),
+                            border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
                               },
-                              child: Icon(Icons.phone),
+                              child: const Icon(Icons.phone),
                             )),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: TextButton(
-                          style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.lightBlue),
-                          ),
-                          onPressed: () {
-                            validation();
-                          },
-                          child: Text('Register'),
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text("I have already an account !    "),
-                          GestureDetector(
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.lightBlue,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
+                      Button(name: 'Sign up', onPressed: validation),
+                      Account(
+                        text: 'I have not account !  ',
+                        btntext: 'Sign up',
+                        ctx: context,
+                        route: '/Login',
                       )
                     ],
                   ),
