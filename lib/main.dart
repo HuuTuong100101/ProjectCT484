@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:goldshop/screens/AllProduct.dart';
+import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/screens/Login.screen.dart';
 import 'package:goldshop/screens/Register.screen.dart';
 
@@ -21,13 +23,15 @@ class MyApp extends StatelessWidget {
       routes: {
         '/Register': (context) => const Register(),
         '/Login': (context) => const Login(),
+        '/Home' : (context) => Home(),
+        '/allproduct': (context) => const AllProduct()
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
+        primarySwatch: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home:const Login(),
+      home: Home(),
     );
   }
 }
