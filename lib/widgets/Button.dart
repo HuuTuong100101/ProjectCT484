@@ -15,7 +15,7 @@ class Button extends StatelessWidget {
       child: TextButton(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
         ),
         onPressed: () {
           onPressed();

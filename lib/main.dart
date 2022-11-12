@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/screens/AllProduct.dart';
+import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/screens/Login.screen.dart';
 import 'package:goldshop/screens/Register.screen.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
         '/Register': (context) => const Register(),
         '/Login': (context) => const Login(),
         '/Home' : (context) => Home(),
-        '/allproduct': (context) => const AllProduct()
+        '/allproduct': (context) => const AllProduct(),
+        '/Cart': (context) => const Cart()
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

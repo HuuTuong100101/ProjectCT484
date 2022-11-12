@@ -1,5 +1,3 @@
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:goldshop/widgets/Button.dart';
 
@@ -43,9 +41,14 @@ class _CardProductState extends State<CardProduct> {
               "Nike super",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
-            // Row(
-            Button(name: 'Add to cart',onPressed: add)
-            // )
+            const SizedBox(
+              height: 13,
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 0),
+              height: 30,
+              child: Button(name: 'Add to cart',onPressed: add),
+            )
           ],
         ),
       ),

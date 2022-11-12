@@ -31,102 +31,108 @@ class Home extends StatelessWidget {
           },
         ),
       ),
-        body: SizedBox(
-          // height: double.infinity,
-          width: double.infinity,
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Swiper(
-                  itemBuilder: (BuildContext context, int i) {
-                    return Image.asset(
-                      _Carousel[i],
-                      fit: BoxFit.fill,
-                    );
-                  },
-                  autoplay: true,
-                  itemCount: _Carousel.length,
-                  pagination: const SwiperPagination(),
-                  control: const SwiperControl(),
-                ),
+      body: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Swiper(
+                itemBuilder: (BuildContext context, int i) {
+                  return Image.asset(
+                    _Carousel[i],
+                    fit: BoxFit.fill,
+                  );
+                },
+                autoplay: true,
+                itemCount: _Carousel.length,
+                pagination: const SwiperPagination(),
+                control: const SwiperControl(),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                height: 50,
-                child: Row(
-                  children: const <Widget>[
-                    Text(
-                      "Categories",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              height: 50,
+              child: Row(
+                children: const <Widget>[
+                  Text(
+                    "Categories",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    cardCategory('assets/images/adidas_n.jpg'),
-                    cardCategory('assets/images/Nike_2.jpg'),
-                    cardCategory('assets/images/converse_n.jpg'),
-                    cardCategory('assets/images/fila_n.jpg'),
-                    cardCategory('assets/images/Jordan_n.jpg'),
-                    cardCategory('assets/images/vans_a.jpg'),
-                  ],
-                ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  cardCategory('assets/images/adidas_n.jpg'),
+                  cardCategory('assets/images/Nike_2.jpg'),
+                  cardCategory('assets/images/converse_n.jpg'),
+                  cardCategory('assets/images/fila_n.jpg'),
+                  cardCategory('assets/images/Jordan_n.jpg'),
+                  cardCategory('assets/images/vans_a.jpg'),
+                ],
               ),
-              const SizedBox(height: 15,),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                height: 20,
-                child: Row(
-                  children: <Widget>[
-                    const Text(
-                      "Products",
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              height: 20,
+              child: Row(
+                children: <Widget>[
+                  const Text(
+                    "Products",
+                    // ignore: unnecessary_const
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    child: const Text(
+                      "See more",
                       // ignore: unnecessary_const
                       style: TextStyle(
                         fontSize: 20,
+                        color: Colors.red,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Spacer(),
-                    GestureDetector(
-                      child: const Text(
-                        "See more",
-                        // ignore: unnecessary_const
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacementNamed(context, '/allproduct');
-                      },
-                    )
-                  ],
-                ),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/allproduct');
+                    },
+                  )
+                ],
               ),
-              const SizedBox(height: 15,),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CardProduct(),
-                    CardProduct()
-                  ],
-                ),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              height: 247,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const <Widget>[
+                  CardProduct(),
+                  CardProduct(),
+                  CardProduct(),
+                  CardProduct(),
+                ],
+              ),
+            )
+          ],
         ),
+      ),
     );
   }
 }
