@@ -1,8 +1,8 @@
 // ignore: file_names
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
+import 'package:goldshop/widgets/Drawer.dart';
 
 class Home extends StatelessWidget {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -13,13 +13,33 @@ class Home extends StatelessWidget {
     'assets/images/carosoue3.jpg',
     'assets/images/carosoue4.jpg',
   ];
+
+  final List<Map<String, dynamic>> _FeaturedProducts = [
+    {
+      'name': 'Hello Adidas',
+      'image': 'assets/images/Adidas1.png',
+      'price': '100'
+    },
+    {
+      'name': 'Hello Converse',
+      'image': 'assets/images/Converse-removebg.png',
+      'price': '200'
+    },
+    {
+      'name': 'Hello Nike',
+      'image': 'assets/images/Nike-removebg-preview.png',
+      'price': '200'
+    },
+  ];
   Home({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      drawer: const Drawer(),
+      drawer: const Drawer(
+        child: DrawerWidget(),
+      ),
       appBar: AppBar(
         title: const Text('Gold Shop'),
         centerTitle: true,
@@ -120,14 +140,16 @@ class Home extends StatelessWidget {
             ),
             SizedBox(
               height: 247,
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: const <Widget>[
-                  CardProduct(),
-                  CardProduct(),
-                  CardProduct(),
-                  CardProduct(),
-                ],
+                itemCount: _FeaturedProducts.length,
+                itemBuilder: (context, index) {
+                  return CardProduct(
+                    name: _FeaturedProducts[index]['name'], 
+                    image: _FeaturedProducts[index]['image'], 
+                    price: _FeaturedProducts[index]['price']
+                  );
+                },
               ),
             )
           ],
