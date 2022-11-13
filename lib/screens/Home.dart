@@ -1,11 +1,25 @@
 // ignore: file_names
 import 'package:card_swiper/card_swiper.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:goldshop/models/product.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
 import 'package:goldshop/widgets/Drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  // ignore: non_constant_identifier_names
+  final Stream<QuerySnapshot> Products =
+      FirebaseFirestore.instance.collection('Products').snapshots();
+
   // ignore: non_constant_identifier_names
   final List<String> _Carousel = [
     'assets/images/carosoue1.jpg',
@@ -31,7 +45,6 @@ class Home extends StatelessWidget {
       'price': '200'
     },
   ];
-  Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -140,17 +153,37 @@ class Home extends StatelessWidget {
             ),
             SizedBox(
               height: 247,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _FeaturedProducts.length,
-                itemBuilder: (context, index) {
-                  return CardProduct(
-                    name: _FeaturedProducts[index]['name'], 
-                    image: _FeaturedProducts[index]['image'], 
-                    price: _FeaturedProducts[index]['price']
-                  );
-                },
-              ),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: Products,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading");
+                    }
+                    return ListView(
+                      scrollDirection: Axis.horizontal,
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                        return CardProduct(
+                            name: '${data['Name']}',
+                            image: '${data['image']}',
+                            price: '${data['price']}');
+                      }).toList(),
+                      // itemCount: _FeaturedProducts.length,
+                      // itemBuilder: (context, index) {
+                      //   return CardProduct(
+                      //       name: _FeaturedProducts[index]['name'],
+                      //       image: _FeaturedProducts[index]['image'],
+                      //       price: _FeaturedProducts[index]['price']);
+                      // },
+                    );
+                  }),
             )
           ],
         ),

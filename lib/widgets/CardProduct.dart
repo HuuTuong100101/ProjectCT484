@@ -6,6 +6,7 @@ class CardProduct extends StatefulWidget {
   final String name;
   final String image;
   final String price;
+  
   const CardProduct({super.key, required this.name, required this.image, required this.price});
 
   @override
@@ -19,6 +20,7 @@ class _CardProductState extends State<CardProduct> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.image);
     return Card(
       child: SizedBox(
         width: 160,
@@ -39,7 +41,7 @@ class _CardProductState extends State<CardProduct> {
                     color: Colors.lightBlue,
                     // ignore: prefer_const_constructors
                     image: DecorationImage(
-                      image: AssetImage(widget.image),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.fill,
                     )),
               ),

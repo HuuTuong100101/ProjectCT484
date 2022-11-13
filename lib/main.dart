@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/screens/AllProduct.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/Register': (context) => const Register(),
         '/Login': (context) => const Login(),
-        '/Home' : (context) => Home(),
+        '/Home': (context) => Home(),
         '/allproduct': (context) => AllProduct(),
         '/Cart': (context) => const Cart()
       },
@@ -34,7 +35,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: Home(),
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: ((context, snapshot) {
+            if (snapshot.hasData) {
+              return Home();
+            } else {
+              return Login();
+            }
+          })),
     );
   }
 }

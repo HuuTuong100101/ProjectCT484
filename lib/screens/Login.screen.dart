@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/widgets/Button.dart';
 import 'package:goldshop/widgets/Account.dart';
 
@@ -26,8 +27,8 @@ class _LoginState extends State<Login> {
     final FormState? _form = _formKey.currentState;
     if (_form!.validate()) {
       try {
-        final FirebaseAuth userCredential = FirebaseAuth.instance;
-        await userCredential.signInWithEmailAndPassword(
+        // ignore: unused_local_variable
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email.trim(), password: password.trim());
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(

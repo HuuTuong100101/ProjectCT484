@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -8,7 +9,6 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
       children: <Widget>[
         const UserAccountsDrawerHeader(
@@ -47,7 +47,7 @@ class DrawerWidget extends StatelessWidget {
         ),
         ListTile(
           onTap: (() {
-            // Navigator.pushReplacementNamed(context, '/Home');
+            FirebaseAuth.instance.signOut();
           }),
           leading: Icon(Icons.logout),
           title: Text("Logout"),
