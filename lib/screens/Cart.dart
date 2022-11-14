@@ -1,6 +1,9 @@
 // import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:goldshop/widgets/CartWidget.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/cart_provider.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -10,85 +13,36 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  int count = 1;
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CartProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Giỏ hàng'),
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Container(
-        height: 150,
-        width: double.infinity,
-        child: Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                height: 120,
-                width: 140,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/Nike_2.jpg"),
-                        fit: BoxFit.fill)),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    const Text("Name"),
-                    const Text("Brand"),
-                    const Text(
-                      "\$400",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Container(
-                      height: 30,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          color: Colors.red[400],
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          GestureDetector(
-                            child: Icon(Icons.remove),
-                            onTap: (() {
-                              setState(() {
-                                if (count > 1) {
-                                  count--;
-                                }
-                              });
-                            }),
-                          ),
-                          Text('${count}'),
-                          GestureDetector(
-                            child: Icon(Icons.add),
-                            onTap: (() {
-                              setState(() {
-                                  count++;
-                              });
-                            }),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+        appBar: AppBar(
+          title: const Text('Giỏ hàng'),
+          centerTitle: true,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
-      ),
-    );
+        body: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          width: double.infinity,
+          child: ListView.builder(
+            itemCount: provider.items.length,
+            itemBuilder: (context, index) =>
+              CartWidget(
+                  name: provider.items.values.toList()[index].name,
+                  brand: provider.items.values.toList()[index].brand,
+                  image: provider.items.values.toList()[index].image,
+                  price: provider.items.values.toList()[index].price,
+                  quantity: provider.items.values.toList()[index].quantity,
+                  )
+            ),
+          ),
+        );
   }
 }

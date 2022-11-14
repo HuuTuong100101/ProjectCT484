@@ -3,9 +3,12 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/models/product.dart';
+import 'package:goldshop/provider/category_provider.dart';
+import 'package:goldshop/screens/ListProduct.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
 import 'package:goldshop/widgets/Drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -14,11 +17,15 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+late CategoryProvider provider;
+
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   // ignore: non_constant_identifier_names
   final Stream<QuerySnapshot> Products =
       FirebaseFirestore.instance.collection('Products').snapshots();
+  final Stream<QuerySnapshot> Categories =
+      FirebaseFirestore.instance.collection('Categories').snapshots();
 
   // ignore: non_constant_identifier_names
   final List<String> _Carousel = [
@@ -26,24 +33,6 @@ class _HomeState extends State<Home> {
     'assets/images/carosoue2.jpg',
     'assets/images/carosoue3.jpg',
     'assets/images/carosoue4.jpg',
-  ];
-
-  final List<Map<String, dynamic>> _FeaturedProducts = [
-    {
-      'name': 'Hello Adidas',
-      'image': 'assets/images/Adidas1.png',
-      'price': '100'
-    },
-    {
-      'name': 'Hello Converse',
-      'image': 'assets/images/Converse-removebg.png',
-      'price': '200'
-    },
-    {
-      'name': 'Hello Nike',
-      'image': 'assets/images/Nike-removebg-preview.png',
-      'price': '200'
-    },
   ];
 
   @override
@@ -100,20 +89,30 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  cardCategory('assets/images/adidas_n.jpg'),
-                  cardCategory('assets/images/Nike_2.jpg'),
-                  cardCategory('assets/images/converse_n.jpg'),
-                  cardCategory('assets/images/fila_n.jpg'),
-                  cardCategory('assets/images/Jordan_n.jpg'),
-                  cardCategory('assets/images/vans_a.jpg'),
-                ],
-              ),
-            ),
+            StreamBuilder<QuerySnapshot>(
+                stream: Categories,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text("Loading");
+                  }
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                        return cardCategory(
+                            data['Image'], context, data['Name']);
+                      }).toList(),
+                    ),
+                  );
+                }),
             const SizedBox(
               height: 15,
             ),
@@ -172,16 +171,12 @@ class _HomeState extends State<Home> {
                             document.data()! as Map<String, dynamic>;
                         return CardProduct(
                             name: '${data['Name']}',
-                            image: '${data['image']}',
-                            price: '${data['price']}');
+                            image: '${data['Image']}',
+                            price: '${data['Price']}',
+                            description: '${data['Description']}',
+                            brand: '${data['Brand']}',
+                            state: '${data['State']}');
                       }).toList(),
-                      // itemCount: _FeaturedProducts.length,
-                      // itemBuilder: (context, index) {
-                      //   return CardProduct(
-                      //       name: _FeaturedProducts[index]['name'],
-                      //       image: _FeaturedProducts[index]['image'],
-                      //       price: _FeaturedProducts[index]['price']);
-                      // },
                     );
                   }),
             )
@@ -192,17 +187,31 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget cardCategory(String img) {
-  return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 10),
-    child: CircleAvatar(
-      radius: 30,
-      backgroundColor: Colors.red,
+Widget cardCategory(String img, BuildContext context, String name) {
+  provider = Provider.of<CategoryProvider>(context);
+  provider.getNikeDataList;
+  // print(provider.getNikeData());
+  provider.getNikeData();
+  List<Product> NikeData = provider.getNikeDataList;
+  return GestureDetector(
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
       child: CircleAvatar(
-        radius: 28,
-        backgroundColor: Colors.white,
-        backgroundImage: AssetImage(img),
+        radius: 30,
+        backgroundColor: Colors.red,
+        child: CircleAvatar(
+          radius: 28,
+          backgroundColor: Colors.white,
+          backgroundImage: AssetImage(img),
+        ),
       ),
     ),
+    onTap: () {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: ((context) => ListProduct(
+                title: name,
+                snapshot: NikeData,
+              ))));
+    },
   );
 }
