@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:goldshop/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +25,8 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 4,  // Change this 
+      shadowColor: Colors.black12,
       child: Row(
         children: <Widget>[
           Container(
@@ -38,28 +38,28 @@ class _CartWidgetState extends State<CartWidget> {
           ),
           Container(
             height: 120,
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            width: 130,
+            margin: const EdgeInsets.only(left: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(widget.name),
+                Expanded(child: Text(widget.name)),
                 Text(widget.brand),
                 Text(
                   "\$${widget.price}",
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 Container(
                   height: 30,
                   width: 100,
                   decoration: BoxDecoration(
-                      color: Colors.red[400],
+                      color: Colors.grey[400],
                       borderRadius: BorderRadius.circular(50)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       GestureDetector(
-                        child: Icon(Icons.remove),
                         onTap: (() {
                           setState(() {
                             if (widget.quantity > 1) {
@@ -67,16 +67,17 @@ class _CartWidgetState extends State<CartWidget> {
                             }
                           });
                         }),
+                        child: const Icon(Icons.remove),
                       ),
                       Text('${ Provider.of<CartProvider>(context, listen: false)
                                   .count(widget.name,widget.quantity)}'),
                       GestureDetector(
-                        child: Icon(Icons.add),
                         onTap: (() {
                           setState(() {
                             widget.quantity++;
                           });
                         }),
+                        child: const Icon(Icons.add),
                       )
                     ],
                   ),
@@ -85,14 +86,14 @@ class _CartWidgetState extends State<CartWidget> {
             ),
           ),
           GestureDetector(
-            child: Container(
-              margin: EdgeInsets.only(left: 50),
-              child: Icon(Icons.delete),
-            ),
             onTap: (() {
               Provider.of<CartProvider>(context, listen: false)
                   .removeItem(widget.name);
             }),
+            child: Container(
+              margin: const EdgeInsets.only(left: 50),
+              child: const Icon(Icons.delete),
+            ),
           )
         ],
       ),

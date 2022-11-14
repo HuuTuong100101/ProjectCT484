@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/models/product.dart';
 import 'package:goldshop/provider/category_provider.dart';
+import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/ListProduct.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
 import 'package:goldshop/widgets/Drawer.dart';
@@ -16,8 +17,6 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
-late CategoryProvider provider;
 
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -52,6 +51,14 @@ class _HomeState extends State<Home> {
             _key.currentState?.openDrawer();
           },
         ),
+        actions: [
+          IconButton(
+          icon: const Icon(Icons.shopping_cart),
+          onPressed: () {
+            Navigator.pushNamed(context, '/Cart');
+          },
+        ),
+        ],
       ),
       body: SizedBox(
         height: double.infinity,
@@ -150,7 +157,8 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 15,
             ),
-            SizedBox(
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15),
               height: 247,
               child: StreamBuilder<QuerySnapshot>(
                   stream: Products,
@@ -165,6 +173,7 @@ class _HomeState extends State<Home> {
                     }
                     return ListView(
                       scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.only(right: 15),
                       children:
                           snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> data =
@@ -187,12 +196,28 @@ class _HomeState extends State<Home> {
   }
 }
 
-Widget cardCategory(String img, BuildContext context, String name) {
-  provider = Provider.of<CategoryProvider>(context);
-  provider.getNikeDataList;
-  // print(provider.getNikeData());
-  provider.getNikeData();
-  List<Product> NikeData = provider.getNikeDataList;
+Widget cardCategory(String img, BuildContext context, String brand) {
+  List<Product> DataCategory = [];
+  final provider = Provider.of<CategoryProvider>(context);
+  if (brand == "Nike") {
+    provider.getNikeData();
+    DataCategory = provider.getNikeDataList;
+  } else if (brand == "Adidas") {
+    provider.getAdidasData();
+    DataCategory = provider.getAdidasDataList;
+  } else if (brand == "Fila") {
+    provider.getFilaData();
+    DataCategory = provider.getFilaDataList;
+  } else if (brand == "Vans") {
+    provider.getVansData();
+    DataCategory = provider.getVansDataList;
+  } else if (brand == "Converse") {
+    provider.getConverseData();
+    DataCategory = provider.getConverseDataList;
+  } else {
+    provider.getJumpmanData();
+    DataCategory = provider.getJumpmanDataList;
+  }
   return GestureDetector(
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -209,8 +234,8 @@ Widget cardCategory(String img, BuildContext context, String name) {
     onTap: () {
       Navigator.of(context).push(MaterialPageRoute(
           builder: ((context) => ListProduct(
-                title: name,
-                snapshot: NikeData,
+                title: brand,
+                snapshot: DataCategory,
               ))));
     },
   );

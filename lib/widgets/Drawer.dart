@@ -40,7 +40,7 @@ class DrawerWidget extends StatelessWidget {
         ),
         ListTile(
           onTap: (() {
-            Navigator.pushReplacementNamed(context, '/Cart');
+            Navigator.pushNamed(context, '/Cart');
           }),
           leading: Icon(Icons.shopping_cart),
           title: Text("Cart"),

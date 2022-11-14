@@ -28,34 +28,6 @@ class ListProduct extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: double.infinity,
         width: double.infinity,
-        // child: StreamBuilder<QuerySnapshot>(
-        //     stream: snapshot,
-        //     builder:
-        //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //       if (snapshot.hasError) {
-        //         return Text('Something went wrong');
-        //       }
-        //       if (snapshot.connectionState == ConnectionState.waiting) {
-        //         return Text("Loading");
-        //       }
-        //       return GridView.count(
-        //         crossAxisSpacing: 10,
-        //         childAspectRatio: 180 / 247,
-        //         mainAxisSpacing: 10,
-        //         crossAxisCount: 2,
-        //         children: snapshot.data!.docs.map((DocumentSnapshot document) {
-        //           Map<String, dynamic> data =
-        //               document.data()! as Map<String, dynamic>;
-        //           return CardProduct(
-        //               name: '${data['Name']}',
-        //               image: '${data['Image']}',
-        //               price: '${data['Price']}',
-        //               description: '${data['Description']}',
-        //               brand: '${data['Brand']}',
-        //               state: '${data['State']}');
-        //         }).toList(),
-        //       );
-        //     }),
         child: GridView.count(
             crossAxisSpacing: 10,
             childAspectRatio: 180 / 247,

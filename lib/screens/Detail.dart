@@ -1,12 +1,17 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:goldshop/provider/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class Detail extends StatefulWidget {
-  final String image;
   final String name;
+  final String image;
+  final String description;
+  final String brand;
   final String price;
+  final String state;
   // ignore: use_key_in_widget_constructors
-  const Detail({required this.image, required this.name, required this.price});
+  const Detail({required this.image, required this.name, required this.price, required this.description, required this.brand, required this.state});
 
   @override
   State<Detail> createState() => _DetailState();
@@ -15,8 +20,10 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Chi tiết sản phẩm'),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
@@ -51,10 +58,12 @@ class _DetailState extends State<Detail> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${widget.name}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          "${widget.name}",
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       Text(
                         "\$${widget.price}",
@@ -100,7 +109,14 @@ class _DetailState extends State<Detail> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                         Navigator.pushNamed(context, '/Cart');
+                          provider.addToCart(
+                          name: widget.name,
+                          price: widget.price,
+                          brand: widget.brand,
+                          image: widget.image);
+                      },
                       child: const Text('Add to cart'),
                     ),
                   ],

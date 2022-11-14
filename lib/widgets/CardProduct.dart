@@ -31,14 +31,20 @@ class _CardProductState extends State<CardProduct> {
   Widget build(BuildContext context) {
     final provider = Provider.of<CartProvider>(context);
     return Card(
+      color: Colors.white,
+      borderOnForeground: true,
+      elevation: 10,
       child: SizedBox(
         width: 160,
-        height: 250,
+        height: 260,
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => Detail(
                     image: widget.image,
+                    brand: widget.brand,
+                    description: widget.description,
+                    state: widget.state,
                     name: widget.name,
                     price: widget.price)));
           },
@@ -58,13 +64,15 @@ class _CardProductState extends State<CardProduct> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                "\$${widget.price}",
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  widget.name,
+                  style:
+                      const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
               ),
               Text(
-                widget.name,
+                "\$${widget.price}",
                 style:
                     const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),

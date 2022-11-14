@@ -56,4 +56,13 @@ class CartProvider with ChangeNotifier {
     _items.remove(name);
     notifyListeners();
   }
+
+  double get totalPal {
+    double total = 0.0;
+    _items.forEach((key, value) {
+      total += value.quantity * double.parse(value.price);
+    });
+
+    return total;
+  }
 }
