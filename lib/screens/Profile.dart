@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:goldshop/models/product.dart';
 import 'package:goldshop/models/user.dart';
 import 'package:goldshop/provider/user_Provider.dart';
+import 'package:goldshop/screens/EditProfile.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -144,7 +145,13 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       ElevatedButton(
-                          onPressed: (() {}),
+                          onPressed: (() {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => EditProfile(
+                                    UserName: snapshot.data!["UserName"],
+                                    Phone: snapshot.data!["Phone"],
+                                  ))));
+                          }),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
