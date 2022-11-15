@@ -118,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
                           });
                         }),
                         decoration: InputDecoration(
-                            hintText: "Username",
+                            hintText: widget.UserName,
                             hintStyle: const TextStyle(color: Colors.black),
                             border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(
@@ -142,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                           });
                         }),
                         decoration: InputDecoration(
-                            hintText: "Phone",
+                            hintText: widget.Phone,
                             hintStyle: const TextStyle(color: Colors.black),
                             border: const OutlineInputBorder(),
                             suffixIcon: GestureDetector(

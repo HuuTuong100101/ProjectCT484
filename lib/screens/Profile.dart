@@ -24,26 +24,9 @@ Future<DocumentSnapshot> getData() async {
   return user;
 }
 
-// final user = FirebaseFirestore.instance
-//     .collection('Users')
-//     .doc(FirebaseAuth.instance.currentUser?.uid)
-//     .get()
-//     .then((querySnapshot) {
-//   querySnapshot.data()?.forEach((key, value) {
-//     print(value[0]);
-//   });
-// });
-
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    // List<Product> DataCategory = [];
-    // final provider = Provider.of<UserProvider>(context);
-    // DataCategory = provider.getNikeDataList;
-    // print(DataCategory.length);
-    // provider.hehe();
-    // List<Usermodel> user = provider.getUser;
-    final username = "hello";
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thông tin khách hàng'),
@@ -77,7 +60,7 @@ class _ProfileState extends State<Profile> {
             ),
             FutureBuilder(
               future: getData(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return Container(
                   height: 250,
                   width: double.infinity,
@@ -99,7 +82,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text("Name"),
-                              Text(snapshot.data!["UserName"])
+                              Text(snapshot.data["UserName"])
                             ],
                           ),
                         ),
@@ -119,7 +102,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Email"),
-                              Text(snapshot.data!["UserEmail"])
+                              Text(snapshot.data["UserEmail"])
                             ],
                           ),
                         ),
@@ -139,7 +122,7 @@ class _ProfileState extends State<Profile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Phone"),
-                              Text(snapshot.data!["Phone"])
+                              Text(snapshot.data["Phone"])
                             ],
                           ),
                         ),
@@ -148,8 +131,8 @@ class _ProfileState extends State<Profile> {
                           onPressed: (() {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: ((context) => EditProfile(
-                                    UserName: snapshot.data!["UserName"],
-                                    Phone: snapshot.data!["Phone"],
+                                    UserName: snapshot.data["UserName"],
+                                    Phone: snapshot.data["Phone"],
                                   ))));
                           }),
                           child: Container(

@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/provider/cart_provider.dart';
 import 'package:goldshop/provider/category_provider.dart';
-import 'package:goldshop/provider/product_provider.dart';
 import 'package:goldshop/provider/user_Provider.dart';
 import 'package:goldshop/screens/AllProduct.dart';
 import 'package:goldshop/screens/Cart.dart';
@@ -28,10 +27,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Provider<ProductProvider>(
-        //   create: (context) => ProductProvider(),
-        // ),
-        
         Provider<CategoryProvider>(
           create: (context) => CategoryProvider(),
         ),
@@ -49,7 +44,6 @@ class MyApp extends StatelessWidget {
           '/Register': (context) => const Register(),
           '/Login': (context) => const Login(),
           '/Home': (context) => Home(),
-          '/allproduct': (context) => AllProduct(),
           '/Profile': (context) =>  Profile(),
           '/Cart': (context) => const Cart()
         },

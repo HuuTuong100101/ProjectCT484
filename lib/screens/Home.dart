@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/models/product.dart';
 import 'package:goldshop/provider/category_provider.dart';
+import 'package:goldshop/screens/AllProduct.dart';
 import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/ListProduct.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
@@ -36,6 +37,22 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    List<Product> DataCategory = [];
+  final provider = Provider.of<CategoryProvider>(context);
+    provider.getNikeData();
+    provider.getAdidasData();
+    provider.getFilaData();
+    provider.getVansData();
+    provider.getConverseData();
+    provider.getJumpmanData();
+    DataCategory = 
+      provider.getNikeDataList +
+      provider.getAdidasDataList +
+      provider.getFilaDataList +
+      provider.getVansDataList +
+      provider.getConverseDataList +
+      provider.getJumpmanDataList;
+
     return Scaffold(
       key: _key,
       drawer: const Drawer(
@@ -148,7 +165,10 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/allproduct');
+                       Navigator.of(context).push(MaterialPageRoute(
+                          builder: ((context) => AllProduct(
+                                snapshot: DataCategory,
+                              ))));
                     },
                   )
                 ],
