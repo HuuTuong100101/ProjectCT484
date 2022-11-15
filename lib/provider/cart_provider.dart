@@ -57,6 +57,11 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeAllItem() {
+    _items = {};
+    notifyListeners();
+  }
+
   double get totalPal {
     double total = 0.0;
     _items.forEach((key, value) {

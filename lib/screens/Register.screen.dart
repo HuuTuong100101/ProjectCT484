@@ -1,4 +1,7 @@
 // ignore_for_file: unnecessary_new
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/widgets/Button.dart';
@@ -21,6 +24,8 @@ String role =
 RegExp regExp = new RegExp(role);
 bool obserText = true;
 String email = '';
+String username = '';
+String phone = '';
 String password = '';
 
 class _RegisterState extends State<Register> {
@@ -28,9 +33,19 @@ class _RegisterState extends State<Register> {
     if (_formKey.currentState!.validate()) {
       try {
         final FirebaseAuth userCredential = FirebaseAuth.instance;
-        await userCredential.createUserWithEmailAndPassword(
+        UserCredential us = await userCredential.createUserWithEmailAndPassword(
             email: email.trim(), password: password.trim());
+
         // ignore: use_build_context_synchronously
+        final docUser = FirebaseFirestore.instance
+            .collection("Users")
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+        await docUser.set({
+          "UserName": username,
+          "UserId": us.user?.uid,
+          "UserEmail": email,
+          "Phone": phone,
+        });
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Đăng ký tài khoản thành công")));
       } on FirebaseAuthException catch (e) {
@@ -94,6 +109,11 @@ class _RegisterState extends State<Register> {
                           }
                           // return '';
                         },
+                        onChanged: ((value) {
+                          setState(() {
+                            username = value;
+                          });
+                        }),
                         decoration: InputDecoration(
                             hintText: "Username",
                             hintStyle: const TextStyle(color: Colors.black),
@@ -172,6 +192,11 @@ class _RegisterState extends State<Register> {
                           }
                           // return '';
                         },
+                        onChanged: ((value) {
+                          setState(() {
+                            phone = value;
+                          });
+                        }),
                         decoration: InputDecoration(
                             hintText: "Phone",
                             hintStyle: const TextStyle(color: Colors.black),

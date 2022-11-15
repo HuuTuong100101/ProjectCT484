@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:goldshop/screens/Home.dart';
+import 'package:goldshop/screens/Register.screen.dart';
 import 'package:goldshop/widgets/Button.dart';
 import 'package:goldshop/widgets/Account.dart';
+import 'dart:io' show Platform;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,27 +21,66 @@ String role =
 // ignore: unnecessary_new
 RegExp regExp = new RegExp(role);
 bool obserText = true;
-String email = '';
-String password = '';
+// String email = '';
+// String password = '';
+final TextEditingController email = TextEditingController();
+final TextEditingController pass = TextEditingController();
 
 class _LoginState extends State<Login> {
-  void validation() async {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final FormState? _form = _formKey.currentState;
-    if (_form!.validate()) {
-      try {
-        // ignore: unused_local_variable
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email.trim(), password: password.trim());
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Đăng nhập thành công")));
-      } on FirebaseAuthException catch (e) {
-        // ignore: unused_local_variable
-        var content = e.message;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(content!)));
-      }
+  void submit(context) async {
+    try {
+      UserCredential result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email.text, password: pass.text);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Đăng nhập thành công"),
+        backgroundColor: Colors.green,
+      ));
+    } on PlatformException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Tài khoản hoặc mật khẩu không đúng !"),
+          backgroundColor: Colors.red,
+        ));
+    } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Tài khoản hoặc mật khẩu không đúng !"),
+          backgroundColor: Colors.red,
+        ));
+    }
+  }
+
+  void vaildation() async {
+    if (email.text.isEmpty && pass.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+            content: Text("Không được bỏ trống"),
+            backgroundColor: Colors.red,
+          ));
+    } else if (email.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+            content: Text("Bạn chưa nhập Email"),
+            backgroundColor: Colors.red,
+          ));
+    } else if (!regExp.hasMatch(email.text)) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+            content: Text("Email không hợp lệ"),
+            backgroundColor: Colors.red,
+          ));
+    } else if (pass.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Bạn chưa nhập mật khẩu"),
+            backgroundColor: Colors.red,
+          ));
+    } else if (pass.text.length < 8) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+            content: Text("Mật khẩu không hợp lệ"),
+            backgroundColor: Colors.red,
+          ));
+    } else {
+      submit(context);
     }
   }
 
@@ -67,19 +109,22 @@ class _LoginState extends State<Login> {
                             color: Colors.lightBlue),
                       ),
                       TextFormField(
-                        validator: (value) {
-                          if (value == '') {
-                            return "Không được bỏ trống";
-                          } else if (!regExp.hasMatch(value!)) {
-                            return "Email không hợp lệ";
-                          }
-                          return null;
-                        },
-                        onChanged: ((value) {
-                          setState(() {
-                            email = value;
-                          });
-                        }),
+                        // validator: (value) {
+                        //   if (value == '') {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //         const SnackBar(
+                        //             content: Text("Không được bỏ trống !")));
+                        //   } else if (!regExp.hasMatch(value!)) {
+                        //     return "Email không hợp lệ";
+                        //   }
+                        //   return null;
+                        // },
+                        // onChanged: ((value) {
+                        //   setState(() {
+                        //     email = value;
+                        //   });
+                        // }),
+                        controller: email,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: "Email",
@@ -88,20 +133,21 @@ class _LoginState extends State<Login> {
                       ),
                       TextFormField(
                         obscureText: obserText,
-                        validator: (String? value) {
-                          if (value == '') {
-                            return "Không được bỏ trống";
-                          }
-                          if (value!.length < 8) {
-                            return "Quá ngắn";
-                          }
-                          return null;
-                        },
-                        onChanged: ((value) {
-                          setState(() {
-                            password = value;
-                          });
-                        }),
+                        // validator: (String? value) {
+                        //   if (value == '') {
+                        //     return "Không được bỏ trống";
+                        //   }
+                        //   if (value!.length < 8) {
+                        //     return "Quá ngắn";
+                        //   }
+                        //   return null;
+                        // },
+                        // onChanged: ((value) {
+                        //   setState(() {
+                        //     password = value;
+                        //   });
+                        // }),
+                        controller: pass,
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             hintText: "Password",
@@ -118,12 +164,12 @@ class _LoginState extends State<Login> {
                                   : Icons.visibility_off),
                             )),
                       ),
-                      Button(name: 'Login', onPressed: validation),
+                      Button(name: 'Login', onPressed: vaildation),
                       Account(
-                          text: 'I have not account !  ',
-                          btntext: 'Sign up',
-                          ctx: context,
-                          route: '/Register',
+                        text: 'I have not account !  ',
+                        btntext: 'Sign up',
+                        ctx: context,
+                        route: '/Register',
                       )
                     ],
                   ),

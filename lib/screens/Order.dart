@@ -1,6 +1,7 @@
 // import 'dart:html';
 import 'package:flutter/material.dart';
-import 'package:goldshop/widgets/CartWidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:goldshop/widgets/OrderCard.dart';
 import 'package:provider/provider.dart';
 
@@ -33,15 +34,29 @@ class _OrderState extends State<Order> {
       bottomNavigationBar: Container(
         height: 50,
         child: ElevatedButton(
+          onPressed: (() {
+            if (total > 10) {
+              FirebaseFirestore.instance.collection("Orders").add({
+                "Uid": FirebaseAuth.instance.currentUser?.uid,
+                "Total": (total * 5.0 / 100.0) + 10.0,
+                "Time": DateTime.now(),
+              });
+              provider.removeAllItem();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Mua thàng công thành công")));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Giỏ hàng trống")));
+            }
+          }),
           child: const Text(
             "Mua hàng",
             style: TextStyle(fontSize: 25),
           ),
-          onPressed: (() {}),
         ),
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: double.infinity,
         width: double.infinity,
         child: ListView.builder(
@@ -59,7 +74,10 @@ class _OrderState extends State<Order> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Tiền sản phẩm"), Text("${total}")],
+                          children: [
+                            const Text("Tiền sản phẩm"),
+                            Text("${total}")
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,10 +89,7 @@ class _OrderState extends State<Order> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Tiền tiền"),
-                            Text("\$ ${(total * 5 / 100) + 10.0}")
-                          ],
+                          children: [Text("Tiền tiền"), Text("\$ ${(total - total*5/100) + 10}")],
                         )
                       ],
                     ),

@@ -33,10 +33,17 @@ class DrawerWidget extends StatelessWidget {
         ),
         ListTile(
           onTap: (() {
-            Navigator.pushReplacementNamed(context, '/Home');
+            Navigator.pushNamed(context, '/Home');
           }),
           leading: Icon(Icons.home),
           title: Text("Home"),
+        ),
+        ListTile(
+          onTap: (() {
+            Navigator.pushNamed(context, '/Profile');
+          }),
+          leading: Icon(Icons.people),
+          title: Text("Profile"),
         ),
         ListTile(
           onTap: (() {

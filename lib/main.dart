@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:goldshop/provider/cart_provider.dart';
 import 'package:goldshop/provider/category_provider.dart';
 import 'package:goldshop/provider/product_provider.dart';
+import 'package:goldshop/provider/user_Provider.dart';
 import 'package:goldshop/screens/AllProduct.dart';
 import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/screens/Login.screen.dart';
+import 'package:goldshop/screens/Profile.dart';
 import 'package:goldshop/screens/Register.screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,15 +28,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<ProductProvider>(
-          create: (context) => ProductProvider(),
-        ),
+        // Provider<ProductProvider>(
+        //   create: (context) => ProductProvider(),
+        // ),
+        
         Provider<CategoryProvider>(
           create: (context) => CategoryProvider(),
         ),
         Provider<CartProvider>(
           create: (context) => CartProvider(),
-        )
+        ),
+        Provider<UserProvider>(
+          create: (context) => UserProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Named Routes Demo',
@@ -44,6 +50,7 @@ class MyApp extends StatelessWidget {
           '/Login': (context) => const Login(),
           '/Home': (context) => Home(),
           '/allproduct': (context) => AllProduct(),
+          '/Profile': (context) =>  Profile(),
           '/Cart': (context) => const Cart()
         },
         debugShowCheckedModeBanner: false,
@@ -51,13 +58,14 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           scaffoldBackgroundColor: Colors.white,
         ),
-        home:StreamBuilder(
+        home:
+        StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: ((BuildContext context,AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Home();
               } else {
-                return Login();
+                return const Login();
               }
             })
         ),

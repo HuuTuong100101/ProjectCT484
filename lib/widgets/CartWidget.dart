@@ -44,7 +44,7 @@ class _CartWidgetState extends State<CartWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Expanded(child: Text(widget.name)),
+                Text(widget.name),
                 Text(widget.brand),
                 Text(
                   "\$${widget.price}",

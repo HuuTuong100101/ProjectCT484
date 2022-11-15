@@ -53,11 +53,11 @@ class _HomeState extends State<Home> {
         ),
         actions: [
           IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          onPressed: () {
-            Navigator.pushNamed(context, '/Cart');
-          },
-        ),
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Cart');
+            },
+          ),
         ],
       ),
       body: SizedBox(
@@ -218,6 +218,7 @@ Widget cardCategory(String img, BuildContext context, String brand) {
     provider.getJumpmanData();
     DataCategory = provider.getJumpmanDataList;
   }
+  // print(DataCategory[0].name);
   return GestureDetector(
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
