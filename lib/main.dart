@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/provider/cart_provider.dart';
 import 'package:goldshop/provider/category_provider.dart';
-import 'package:goldshop/provider/user_Provider.dart';
 import 'package:goldshop/screens/AllProduct.dart';
 import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/Home.dart';
@@ -34,9 +33,6 @@ class MyApp extends StatelessWidget {
         ),
         Provider<CartProvider>(
           create: (context) => CartProvider(),
-        ),
-        Provider<UserProvider>(
-          create: (context) => UserProvider(),
         ),
       ],
       child: MaterialApp(

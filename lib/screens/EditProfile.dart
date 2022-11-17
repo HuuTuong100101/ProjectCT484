@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new
+// ignore_for_file: unnecessary_new, use_build_context_synchronously
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,10 +13,7 @@ import '../widgets/Account.dart';
 class EditProfile extends StatefulWidget {
   String UserName;
   String Phone;
-  EditProfile(
-      {super.key,
-      required this.Phone,
-      required this.UserName});
+  EditProfile({super.key, required this.Phone, required this.UserName});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -28,22 +25,24 @@ String role =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 RegExp regExp = new RegExp(role);
 bool obserText = true;
-String username = '';
-String phone = '';
 
 class _EditProfileState extends State<EditProfile> {
-  void validation() async {
+  void validation() {
     if (_formKey.currentState!.validate()) {
       try {
-        final update = FirebaseFirestore.instance
+        // ignore: non_constant_identifier_names
+        var Update =  FirebaseFirestore.instance
             .collection("Users")
             .doc(FirebaseAuth.instance.currentUser?.uid)
-            .update({"UserName": username, "Phone": phone});
+            .update({"UserName": widget.UserName ,"Phone": widget.Phone});
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Cập nhật thành công !")));
+        Navigator.pop(context);
       } on FirebaseAuthException catch (e) {
         // ignore: unused_local_variable
         var content = e.message;
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(content!)));
+            .showSnackBar(SnackBar(content: Text("Thất bại!")));
       }
     }
   }
@@ -52,7 +51,9 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chỉnh sửa thông tin',),
+        title: const Text(
+          'Chỉnh sửa thông tin',
+        ),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
@@ -90,31 +91,17 @@ class _EditProfileState extends State<EditProfile> {
                     ],
                   ),
                 ),
-                // SizedBox(
-                //   height: 20,
-                // ),
                 Container(
                   height: 200,
                   width: double.infinity,
-                  // color: Colors.lightBlue,
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       TextFormField(
-                        validator: (String? value) {
-                          if (value == '') {
-                            setState(() {
-                              username = widget.UserName;
-                            });
-                          }
-                          if(value == '') {
-                            
-                          }
-                        },
                         onChanged: ((value) {
                           setState(() {
-                            username = value;
+                            widget.UserName = value;
                           });
                         }),
                         decoration: InputDecoration(
@@ -129,16 +116,9 @@ class _EditProfileState extends State<EditProfile> {
                             )),
                       ),
                       TextFormField(
-                        validator: (String? value) {
-                          if (value == '') {
-                            setState(() {
-                              username = widget.Phone;
-                            });
-                          }
-                        },
                         onChanged: ((value) {
                           setState(() {
-                            phone = value;
+                            widget.Phone = value;
                           });
                         }),
                         decoration: InputDecoration(

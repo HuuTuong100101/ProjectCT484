@@ -1,29 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:goldshop/models/product.dart';
-import 'package:goldshop/models/user.dart';
-import 'package:goldshop/provider/user_Provider.dart';
 import 'package:goldshop/screens/EditProfile.dart';
-import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
-  Profile({super.key});
+  const Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
-Future<DocumentSnapshot> getData() async {
-  final user = await FirebaseFirestore.instance
-      .collection('Users')
-      .doc(FirebaseAuth.instance.currentUser?.uid)
-      .get();
-  print(user);
-  return user;
-}
+// Stream<DocumentSnapshot> getData() {
+//   final user = FirebaseFirestore.instance
+//       .collection('Users')
+//       .doc(FirebaseAuth.instance.currentUser?.uid)
+//       .get();
+// }
 
 class _ProfileState extends State<Profile> {
   @override
@@ -59,12 +51,18 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
-            FutureBuilder(
-              future: getData(),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
+                // if (snapshot.connectionState == ConnectionState.done) {
+                if (!snapshot.hasData) return const Text('Loading...');
                 return Container(
                   height: 250,
                   width: double.infinity,
+                  // child: Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -145,7 +143,11 @@ class _ProfileState extends State<Profile> {
                           ))
                     ],
                   ),
+                  // ),
                 );
+                // }
+                // }
+                return Text("No widget to build");
               },
             )
           ],

@@ -12,14 +12,6 @@ class OrderHistory extends StatefulWidget {
   State<OrderHistory> createState() => _OrderHistoryState();
 }
 
-// Stream<QuerySnapshot> getOrderHistories() {
-//   var snap = FirebaseFirestore.instance
-//       .collection('Orders')
-//       .where("Uid", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-//       .snapshots();
-//   return snap;
-// }
-
 class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
