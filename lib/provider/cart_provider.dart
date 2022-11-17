@@ -70,4 +70,13 @@ class CartProvider with ChangeNotifier {
 
     return total;
   }
+
+  String get detailOrder {
+    String detailorder = '';
+    _items.forEach((key, value) {
+      detailorder +=
+          '- ${value.name} (${value.brand}): \$${value.price}x${value.quantity}';
+    });
+    return detailorder;
+  }
 }

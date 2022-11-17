@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:goldshop/widgets/OrderCard.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../provider/cart_provider.dart';
 
@@ -13,7 +14,7 @@ class Order extends StatefulWidget {
   @override
   State<Order> createState() => _OrderState();
 }
-
+String format = DateFormat('dd-MM-yyyy - kk:mm').format(DateTime.now());
 class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
@@ -38,8 +39,9 @@ class _OrderState extends State<Order> {
             if (total > 10) {
               FirebaseFirestore.instance.collection("Orders").add({
                 "Uid": FirebaseAuth.instance.currentUser?.uid,
+                "Detail": provider.detailOrder,
                 "Total": (total * 5.0 / 100.0) + 10.0,
-                "Time": DateTime.now(),
+                "Time": format,
               });
               provider.removeAllItem();
               ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +91,10 @@ class _OrderState extends State<Order> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Tiền tiền"), Text("\$ ${(total - total*5/100) + 10}")],
+                          children: [
+                            Text("Tiền tiền"),
+                            Text("\$ ${(total - total * 5 / 100) + 10}")
+                          ],
                         )
                       ],
                     ),

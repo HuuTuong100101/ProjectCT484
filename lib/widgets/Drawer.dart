@@ -47,6 +47,13 @@ class DrawerWidget extends StatelessWidget {
         ),
         ListTile(
           onTap: (() {
+            Navigator.pushNamed(context, '/Order');
+          }),
+          leading: Icon(Icons.list),
+          title: Text("Orders"),
+        ),
+        ListTile(
+          onTap: (() {
             Navigator.pushNamed(context, '/Cart');
           }),
           leading: Icon(Icons.shopping_cart),

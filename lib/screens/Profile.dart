@@ -21,6 +21,7 @@ Future<DocumentSnapshot> getData() async {
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .get();
+  print(user);
   return user;
 }
 
@@ -130,10 +131,10 @@ class _ProfileState extends State<Profile> {
                       ElevatedButton(
                           onPressed: (() {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => EditProfile(
-                                    UserName: snapshot.data["UserName"],
-                                    Phone: snapshot.data["Phone"],
-                                  ))));
+                                builder: ((context) => EditProfile(
+                                      UserName: snapshot.data["UserName"],
+                                      Phone: snapshot.data["Phone"],
+                                    ))));
                           }),
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 30),
