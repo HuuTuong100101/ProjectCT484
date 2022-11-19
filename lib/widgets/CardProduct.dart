@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/Detail.dart';
 import 'package:goldshop/widgets/Button.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +56,7 @@ class _CardProductState extends State<CardProduct> {
                     color: Colors.lightBlue,
                     // ignore: prefer_const_constructors
                     image: DecorationImage(
-                      image: AssetImage(widget.image),
+                      image: NetworkImage(widget.image),
                       fit: BoxFit.fill,
                     )),
               ),

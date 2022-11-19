@@ -9,14 +9,6 @@ class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
-
-// Stream<DocumentSnapshot> getData() {
-//   final user = FirebaseFirestore.instance
-//       .collection('Users')
-//       .doc(FirebaseAuth.instance.currentUser?.uid)
-//       .get();
-// }
-
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
@@ -31,13 +23,21 @@ class _ProfileState extends State<Profile> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Home');
+            },
+          ),
+        ],
       ),
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 200,
               width: double.infinity,
               child: Column(
@@ -59,7 +59,7 @@ class _ProfileState extends State<Profile> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 // if (snapshot.connectionState == ConnectionState.done) {
                 if (!snapshot.hasData) return const Text('Loading...');
-                return Container(
+                return SizedBox(
                   height: 250,
                   width: double.infinity,
                   // child: Expanded(
@@ -71,7 +71,7 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -91,7 +91,7 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -100,7 +100,7 @@ class _ProfileState extends State<Profile> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Email"),
+                              const Text("Email"),
                               Text(snapshot.data["UserEmail"])
                             ],
                           ),
@@ -111,7 +111,7 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -120,7 +120,7 @@ class _ProfileState extends State<Profile> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Phone"),
+                              const Text("Phone"),
                               Text(snapshot.data["Phone"])
                             ],
                           ),
@@ -135,19 +135,15 @@ class _ProfileState extends State<Profile> {
                                     ))));
                           }),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Text(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: const Text(
                               "Edit Profile",
                               style: TextStyle(fontSize: 17),
                             ),
                           ))
                     ],
                   ),
-                  // ),
                 );
-                // }
-                // }
-                return Text("No widget to build");
               },
             )
           ],

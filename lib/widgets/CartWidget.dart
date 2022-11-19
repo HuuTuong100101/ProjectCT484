@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:goldshop/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class CartWidget extends StatefulWidget {
   final String name;
   final String brand;
@@ -34,18 +35,17 @@ class _CartWidgetState extends State<CartWidget> {
             width: 140,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(widget.image), fit: BoxFit.fill)),
+                    image: NetworkImage(widget.image), fit: BoxFit.fill)),
           ),
           Container(
             height: 120,
-            width: 130,
+            width: 140,
             margin: const EdgeInsets.only(left: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(widget.name),
-                Text(widget.brand),
                 Text(
                   "\$${widget.price}",
                   style: const TextStyle(color: Colors.grey),
@@ -91,7 +91,7 @@ class _CartWidgetState extends State<CartWidget> {
                   .removeItem(widget.name);
             }),
             child: Container(
-              margin: const EdgeInsets.only(left: 50),
+              margin: const EdgeInsets.only(left: 20),
               child: const Icon(Icons.delete),
             ),
           )

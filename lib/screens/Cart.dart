@@ -28,16 +28,25 @@ class _CartState extends State<Cart> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Home');
+            },
+          ),
+        ],
       ),
+
       bottomNavigationBar: Container(
         height: 50,
         child: ElevatedButton(
           onPressed: (() {
             Navigator.push(
-                context, MaterialPageRoute(builder: ((context) => Order())));
+                context, MaterialPageRoute(builder: ((context) => const Order())));
           }),
           child: const Text(
-            "Continous",
+            "Tiếp tục",
             style: TextStyle(fontSize: 25),
           ),
         ),

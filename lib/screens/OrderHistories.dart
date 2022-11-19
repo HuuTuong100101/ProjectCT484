@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:goldshop/screens/Cart.dart';
-import 'package:goldshop/widgets/OrderCard.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({super.key});
@@ -40,9 +38,8 @@ class _OrderHistoryState extends State<OrderHistory> {
                     for (var i = 0; i < value.docs.length; i++) {
                       FirebaseFirestore.instance
                           .collection("Orders")
-                          .doc('${value.docs[i].id}')
+                          .doc(value.docs[i].id)
                           .delete();
-                      // print(value.docs[i].id);
                     }
                   });
                    ScaffoldMessenger.of(context)
@@ -52,11 +49,11 @@ class _OrderHistoryState extends State<OrderHistory> {
                       .showSnackBar(const SnackBar(content: Text("Lỗi")));
                 }
               },
-              child: Text("Delete All"),
+              child: const Text("Delete All"),
             )
           ],
         ),
-        body: Container(
+        body: SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: StreamBuilder(
@@ -72,7 +69,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                       itemBuilder: ((context, index) => Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 15),
-                            child: Container(
+                            child: SizedBox(
                               width: double.infinity,
                               child: Card(
                                 child: Column(
@@ -83,7 +80,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                           children: [
                                             Text(
                                               "Thời gian mua: ${snapshot.data?.docs[index]['Time']}",
-                                              style: TextStyle(fontSize: 19),
+                                              style: const TextStyle(fontSize: 19),
                                             ),
                                           ],
                                         ),
@@ -91,15 +88,18 @@ class _OrderHistoryState extends State<OrderHistory> {
                                           children: [
                                             Text(
                                               "Tổng tiền: \$${snapshot.data?.docs[index]['Total']}",
-                                              style: TextStyle(fontSize: 17),
+                                              style: const TextStyle(fontSize: 17),
                                             ),
                                           ],
                                         ),
                                         Row(
                                           children: [
-                                            Text(
-                                              "Chi tiết hóa đơn: \n ${snapshot.data?.docs[index]['Detail']} \n",
-                                              style: TextStyle(fontSize: 15),
+                                            SizedBox(
+                                              width: 350,
+                                              child: Text(
+                                                "Chi tiết hóa đơn: \n ${snapshot.data?.docs[index]['Detail']} \n",
+                                                style: const TextStyle(fontSize: 15),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -128,7 +128,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                                 Text("Lỗi")));
                                               }
                                             },
-                                            child: Icon(Icons.delete))
+                                            child: const Icon(Icons.delete))
                                       ],
                                     )
                                   ],

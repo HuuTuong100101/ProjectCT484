@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:goldshop/widgets/OrderCard.dart';
 import 'package:provider/provider.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 import '../provider/cart_provider.dart';
@@ -14,7 +15,9 @@ class Order extends StatefulWidget {
   @override
   State<Order> createState() => _OrderState();
 }
+
 String format = DateFormat('dd-MM-yyyy - kk:mm').format(DateTime.now());
+
 class _OrderState extends State<Order> {
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,16 @@ class _OrderState extends State<Order> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Home');
+            },
+          ),
+        ],
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 50,
         child: ElevatedButton(
           onPressed: (() {
@@ -46,6 +57,7 @@ class _OrderState extends State<Order> {
               provider.removeAllItem();
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Mua thàng công thành công")));
+              Navigator.pushNamed(context, '/Order');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Giỏ hàng trống")));
@@ -78,21 +90,27 @@ class _OrderState extends State<Order> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text("Tiền sản phẩm"),
-                            Text("${total}")
+                            Text("$total")
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Giảm giá"), Text("\$ 5%")],
+                          children:const [
+                            Text("Giảm giá"), 
+                            Text("\$ 5%")
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Tiền giao hàng"), Text("\$ 10")],
+                          children:const [
+                            Text("Tiền giao hàng"), 
+                            Text("\$ 10")
+                          ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Tiền tiền"),
+                            const Text("Tiền tiền"),
                             Text("\$ ${(total - total * 5 / 100) + 10}")
                           ],
                         )

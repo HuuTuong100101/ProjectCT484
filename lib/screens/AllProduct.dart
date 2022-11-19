@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
@@ -7,13 +7,13 @@ import '../models/product.dart';
 
 class AllProduct extends StatelessWidget {
   final List<Product> snapshot;
-  AllProduct({super.key, required this.snapshot});
+  const AllProduct({super.key, required this.snapshot});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Products"),
+        title: const Text("All Products"),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
@@ -22,9 +22,17 @@ class AllProduct extends StatelessWidget {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),));
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Home');
+            },
+          ),
+        ],
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: double.infinity,
         width: double.infinity,
         child: GridView.count(

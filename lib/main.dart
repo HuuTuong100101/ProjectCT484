@@ -2,12 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/provider/cart_provider.dart';
-import 'package:goldshop/provider/category_provider.dart';
-import 'package:goldshop/screens/AllProduct.dart';
+import 'package:goldshop/provider/product_provider.dart';
 import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/Home.dart';
 import 'package:goldshop/screens/Login.screen.dart';
-import 'package:goldshop/screens/Order.dart';
 import 'package:goldshop/screens/OrderHistories.dart';
 import 'package:goldshop/screens/Profile.dart';
 import 'package:goldshop/screens/Register.screen.dart';
@@ -28,8 +26,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<CategoryProvider>(
-          create: (context) => CategoryProvider(),
+        Provider<ProductProvider>(
+          create: (context) => ProductProvider(),
         ),
         Provider<CartProvider>(
           create: (context) => CartProvider(),
@@ -41,22 +39,22 @@ class MyApp extends StatelessWidget {
         routes: {
           '/Register': (context) => const Register(),
           '/Login': (context) => const Login(),
-          '/Home': (context) => Home(),
-          '/Profile': (context) =>  Profile(),
+          '/Home': (context) => const Home(),
+          '/Profile': (context) =>  const Profile(),
           '/Cart': (context) => const Cart(),
           '/Order': (context) => const OrderHistory()
         },
         debugShowCheckedModeBanner: false,
-        // theme: ThemeData(
-        //   // primarySwatch: Colors.red,
-        //   // scaffoldBackgroundColor: Colors.white,
-        // ),
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+          scaffoldBackgroundColor: Colors.white,
+        ),
         home:
         StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (( context, snapshot) {
               if (snapshot.hasData) {
-                return Home();
+                return const Home();
               } else {
                 return const Login();
               }

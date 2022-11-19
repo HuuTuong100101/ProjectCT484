@@ -1,71 +1,95 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
+// ignore: must_be_immutable
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({super.key});
+  final String username;
+  final String email;
+  const DrawerWidget({super.key, required this.username, required this.email});
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: <Widget>[
-        const UserAccountsDrawerHeader(
-          // decoration: BoxDecoration(color: Colors.red.withOpacity(0.5)),
-          currentAccountPicture: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/Nike_2.jpg'),
+      children: [
+         UserAccountsDrawerHeader(
+          currentAccountPicture:const CircleAvatar(
+            backgroundImage: NetworkImage("https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/81813335_2173362772960111_8653992229628542976_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=NeLppJAPJJAAX8SRiva&_nc_ht=scontent.fsgn13-2.fna&oh=00_AfAdsYEIGSKF4xmYMcr331KCjUSUBIVTSelegG2DILgMMg&oe=639AA9D8"),
           ),
           accountName: Text(
-            "Hữu Tường",
-            style: TextStyle(
+            username,
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
           accountEmail: Text(
-            "tuongb1910480@gmail.com",
-            style: TextStyle(
+            email,
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
-        ListTile(
-          onTap: (() {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // Background color
+          ),
+          onPressed: (() {
             Navigator.pushNamed(context, '/Home');
           }),
-          leading: Icon(Icons.home),
-          title: Text("Home"),
+          child: const ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+          ),
         ),
-        ListTile(
-          onTap: (() {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // Background color
+          ),
+          onPressed: (() {
             Navigator.pushNamed(context, '/Profile');
           }),
-          leading: Icon(Icons.people),
-          title: Text("Profile"),
+          child: const ListTile(
+            leading: Icon(Icons.people),
+            title: Text("Profile"),
+          ),
         ),
-        ListTile(
-          onTap: (() {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // Background color
+          ),
+          onPressed: (() {
             Navigator.pushNamed(context, '/Order');
           }),
-          leading: Icon(Icons.list),
-          title: Text("Orders"),
+          child: const ListTile(
+            leading: Icon(Icons.list),
+            title: Text("Orders"),
+          ),
         ),
-        ListTile(
-          onTap: (() {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // Background color
+          ),
+          onPressed: (() {
             Navigator.pushNamed(context, '/Cart');
           }),
-          leading: Icon(Icons.shopping_cart),
-          title: Text("Cart"),
+          child: const ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text("Cart"),
+          ),
         ),
-        ListTile(
-          onTap: (() {
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // Background color
+          ),
+          onPressed: (() {
             FirebaseAuth.instance.signOut();
           }),
-          leading: Icon(Icons.logout),
-          title: Text("Logout"),
-        ),
+          child: const ListTile(
+            leading: Icon(Icons.logout),
+            title: Text("Logout"),
+          ),
+        )
       ],
     );
   }

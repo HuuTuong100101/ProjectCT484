@@ -1,11 +1,10 @@
 // ignore: file_names
 import 'package:card_swiper/card_swiper.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:goldshop/models/product.dart';
-import 'package:goldshop/provider/category_provider.dart';
+import 'package:goldshop/provider/product_provider.dart';
 import 'package:goldshop/screens/AllProduct.dart';
-import 'package:goldshop/screens/Cart.dart';
 import 'package:goldshop/screens/ListProduct.dart';
 import 'package:goldshop/widgets/CardProduct.dart';
 import 'package:goldshop/widgets/Drawer.dart';
@@ -13,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  Home({super.key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -23,9 +22,15 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   // ignore: non_constant_identifier_names
   final Stream<QuerySnapshot> Products =
-      FirebaseFirestore.instance.collection('Products').snapshots();
+      FirebaseFirestore.instance.collection('Products').where("State", isEqualTo: "1").snapshots();
+  // ignore: non_constant_identifier_names
   final Stream<QuerySnapshot> Categories =
       FirebaseFirestore.instance.collection('Categories').snapshots();
+  final Stream<DocumentSnapshot<Map<String, dynamic>>> user = FirebaseFirestore
+      .instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .snapshots();
 
   // ignore: non_constant_identifier_names
   final List<String> _Carousel = [
@@ -37,26 +42,37 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: non_constant_identifier_names
     List<Product> DataCategory = [];
-  final provider = Provider.of<CategoryProvider>(context);
+    final provider = Provider.of<ProductProvider>(context);
     provider.getNikeData();
     provider.getAdidasData();
     provider.getFilaData();
     provider.getVansData();
     provider.getConverseData();
     provider.getJumpmanData();
-    DataCategory = 
-      provider.getNikeDataList +
-      provider.getAdidasDataList +
-      provider.getFilaDataList +
-      provider.getVansDataList +
-      provider.getConverseDataList +
-      provider.getJumpmanDataList;
+    DataCategory = provider.getNikeDataList +
+        provider.getAdidasDataList +
+        provider.getFilaDataList +
+        provider.getVansDataList +
+        provider.getConverseDataList +
+        provider.getJumpmanDataList;
 
     return Scaffold(
       key: _key,
-      drawer: const Drawer(
-        child: DrawerWidget(),
+      drawer: Drawer(
+        child: StreamBuilder(
+            stream: FirebaseFirestore
+              .instance
+              .collection('Users')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) return const Text("Loading...");
+              return DrawerWidget(
+                  username: snapshot.data["UserName"],
+                  email: snapshot.data["UserEmail"]);
+            }),
       ),
       appBar: AppBar(
         title: const Text('Gold Shop'),
@@ -104,7 +120,7 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: const <Widget>[
                   Text(
-                    "Categories",
+                    "Thương hiệu",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -118,10 +134,10 @@ class _HomeState extends State<Home> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Text('Something went wrong');
+                    return const Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("Loading");
+                    return const Text("Loading");
                   }
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -146,7 +162,7 @@ class _HomeState extends State<Home> {
               child: Row(
                 children: <Widget>[
                   const Text(
-                    "Products",
+                    "Sản phẩm mới",
                     // ignore: unnecessary_const
                     style: TextStyle(
                       fontSize: 20,
@@ -156,7 +172,7 @@ class _HomeState extends State<Home> {
                   const Spacer(),
                   GestureDetector(
                     child: const Text(
-                      "See more",
+                      "Tất cả",
                       // ignore: unnecessary_const
                       style: TextStyle(
                         fontSize: 20,
@@ -165,7 +181,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     onTap: () {
-                       Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(MaterialPageRoute(
                           builder: ((context) => AllProduct(
                                 snapshot: DataCategory,
                               ))));
@@ -178,18 +194,18 @@ class _HomeState extends State<Home> {
               height: 15,
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
               height: 247,
               child: StreamBuilder<QuerySnapshot>(
                   stream: Products,
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Text('Something went wrong');
+                      return const Text('Something went wrong');
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
+                      return const Text("Loading...");
                     }
                     return ListView(
                       scrollDirection: Axis.horizontal,
@@ -217,8 +233,9 @@ class _HomeState extends State<Home> {
 }
 
 Widget cardCategory(String img, BuildContext context, String brand) {
+  // ignore: non_constant_identifier_names
   List<Product> DataCategory = [];
-  final provider = Provider.of<CategoryProvider>(context);
+  final provider = Provider.of<ProductProvider>(context);
   if (brand == "Nike") {
     provider.getNikeData();
     DataCategory = provider.getNikeDataList;

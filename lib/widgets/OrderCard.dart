@@ -1,9 +1,7 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:goldshop/provider/cart_provider.dart';
-import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class OrderCard extends StatefulWidget {
   final String name;
   final String brand;
@@ -36,7 +34,7 @@ class _OrderCardState extends State<OrderCard> {
             width: 140,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(widget.image), fit: BoxFit.fill)),
+                    image: NetworkImage(widget.image), fit: BoxFit.fill)),
           ),
           Expanded(
             child: Container(
@@ -50,7 +48,7 @@ class _OrderCardState extends State<OrderCard> {
                   Text('Thương hiệu: ${widget.brand}'),
                   Text(
                     "Giá: \$${widget.price}",
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                   Text("Số lượng: ${widget.quantity}"),
                   Text("Tổng: \$ ${widget.quantity * double.parse(widget.price)}"),
