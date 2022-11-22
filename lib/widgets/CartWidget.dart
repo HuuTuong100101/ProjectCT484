@@ -98,7 +98,7 @@ class _CartWidgetState extends State<CartWidget> {
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("Xóa lỗi"),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.red,
                 ));
               }
             }),

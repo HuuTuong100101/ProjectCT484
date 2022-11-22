@@ -11,6 +11,25 @@ class ProductProvider with ChangeNotifier {
   List<Product> Vans = [];
   List<Product> Converse = [];
   List<Product> Fila = [];
+  List<Product> AllProducts = [];
+
+  Future<void> getAllProducts() async {
+    List<Product> newlist = [];
+    await FirebaseFirestore.instance.collection('Products').get().then((data) {
+      for (var i = 0; i < data.docs.length; i++) {
+        // print(data.data());
+        newlist.add(Product(
+            image: '${data.docs[i]['Image']}',
+            name: '${data.docs[i]['Name']}',
+            brand: '${data.docs[i]['Brand']}',
+            price: '${data.docs[i]['Price']}',
+            State: '${data.docs[i]['State']}',
+            description: '${data.docs[i]['Description']}'));
+        notifyListeners();
+      }
+    });
+    AllProducts = newlist;
+  }
 
   Future<void> getNikeData() async {
     List<Product> newlist = [];
@@ -172,5 +191,10 @@ class ProductProvider with ChangeNotifier {
   List<Product> get getConverseDataList {
     getConverseData();
     return Converse;
+  }
+
+  List<Product> get getAllDataList {
+    getAllProducts();
+    return AllProducts;
   }
 }

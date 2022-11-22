@@ -43,20 +43,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // ignore: non_constant_identifier_names
-    List<Product> DataCategory = [];
     final provider = Provider.of<ProductProvider>(context);
-    provider.getNikeData();
-    provider.getAdidasData();
-    provider.getFilaData();
-    provider.getVansData();
-    provider.getConverseData();
-    provider.getJumpmanData();
-    DataCategory = provider.getNikeDataList +
-        provider.getAdidasDataList +
-        provider.getFilaDataList +
-        provider.getVansDataList +
-        provider.getConverseDataList +
-        provider.getJumpmanDataList;
+    // ignore: non_constant_identifier_names
+    List<Product> DataCategory = provider.getAllDataList;
 
     return Scaffold(
       key: _key,
@@ -99,7 +88,6 @@ class _HomeState extends State<Home> {
         height: double.infinity,
         width: double.infinity,
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
