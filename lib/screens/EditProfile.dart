@@ -34,14 +34,20 @@ class _EditProfileState extends State<EditProfile> {
             .update({"UserName": widget.UserName ,"Phone": widget.Phone});
         ScaffoldMessenger.of(context)
             // ignore: prefer_const_constructors
-            .showSnackBar(SnackBar(content: Text("Cập nhật thành công !")));
+            .showSnackBar(SnackBar(
+              content: const Text("Cập nhật thành công !"),
+              backgroundColor: Colors.green,
+              ));
         Navigator.pop(context);
       } on FirebaseAuthException catch (e) {
         // ignore: unused_local_variable
         var content = e.message;
         ScaffoldMessenger.of(context)
             // ignore: prefer_const_constructors
-            .showSnackBar(SnackBar(content: Text("Thất bại!")));
+            .showSnackBar(SnackBar(
+              content: const Text("Thất bại!"),
+              backgroundColor: Colors.red,
+            ));
       }
     }
   }

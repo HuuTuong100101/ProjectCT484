@@ -26,7 +26,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,  // Change this 
+      elevation: 4, // Change this
       shadowColor: Colors.black12,
       child: Row(
         children: <Widget>[
@@ -69,8 +69,8 @@ class _CartWidgetState extends State<CartWidget> {
                         }),
                         child: const Icon(Icons.remove),
                       ),
-                      Text('${ Provider.of<CartProvider>(context, listen: false)
-                                  .count(widget.name,widget.quantity)}'),
+                      Text(
+                          '${Provider.of<CartProvider>(context, listen: false).count(widget.name, widget.quantity)}'),
                       GestureDetector(
                         onTap: (() {
                           setState(() {
@@ -87,8 +87,20 @@ class _CartWidgetState extends State<CartWidget> {
           ),
           GestureDetector(
             onTap: (() {
-              Provider.of<CartProvider>(context, listen: false)
-                  .removeItem(widget.name);
+              try {
+                Provider.of<CartProvider>(context, listen: false)
+                    .removeItem(widget.name);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Xóa thành công"),
+                  backgroundColor: Colors.green,
+                ));
+                Navigator.popAndPushNamed(context, '/Cart');
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Xóa lỗi"),
+                  backgroundColor: Colors.green,
+                ));
+              }
             }),
             child: Container(
               margin: const EdgeInsets.only(left: 20),

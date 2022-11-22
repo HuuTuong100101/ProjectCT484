@@ -19,10 +19,10 @@ String role =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 RegExp regExp = new RegExp(role);
 bool obserText = true;
-String email = '';
-String username = '';
-String phone = '';
-String password = '';
+final TextEditingController email = TextEditingController();
+final TextEditingController pass = TextEditingController();
+final TextEditingController phone = TextEditingController();
+final TextEditingController  username = TextEditingController();
 
 class _RegisterState extends State<Register> {
   void validation() async {
@@ -30,30 +30,38 @@ class _RegisterState extends State<Register> {
       try {
         final FirebaseAuth userCredential = FirebaseAuth.instance;
         UserCredential us = await userCredential.createUserWithEmailAndPassword(
-            email: email.trim(), password: password.trim());
+            email: email.text, password: pass.text);
 
         // ignore: use_build_context_synchronously
         final docUser = FirebaseFirestore.instance
             .collection("Users")
             .doc(FirebaseAuth.instance.currentUser!.uid);
         await docUser.set({
-          "UserName": username,
+          "UserName": username.text,
           "UserId": us.user?.uid,
-          "UserEmail": email,
-          "Phone": phone,
+          "UserEmail": email.text,
+          "Phone": phone.text,
         });
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Đăng ký tài khoản thành công")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Đăng ký tài khoản thành công"),
+          backgroundColor: Colors.green,
+        ));
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, '/Login');
       } on FirebaseAuthException catch (e) {
         // ignore: unused_local_variable
         var content = e.message;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(content!)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(content!),
+          backgroundColor: Colors.red,
+        ));
       } on PlatformException catch (e) {
         var content = e.message;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(content!)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(content!),
+          backgroundColor: Colors.red,
+        ));
       }
     }
   }
@@ -95,6 +103,7 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     TextFormField(
+                      controller: username,
                       validator: (String? value) {
                         if (value == '') {
                           return "Không được bỏ trống";
@@ -103,11 +112,6 @@ class _RegisterState extends State<Register> {
                           return "Quá ngắn";
                         }
                       },
-                      onChanged: ((value) {
-                        setState(() {
-                          username = value;
-                        });
-                      }),
                       decoration: InputDecoration(
                           hintText: "Username",
                           hintStyle: const TextStyle(color: Colors.black),
@@ -120,19 +124,14 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     TextFormField(
+                      controller: email,
                       validator: (value) {
                         if (value == '') {
                           return "Không được bỏ trống";
                         } else if (!regExp.hasMatch(value!)) {
                           return "Email không hợp lệ";
                         }
-                        // return '';
                       },
-                      onChanged: ((value) {
-                        setState(() {
-                          email = value;
-                        });
-                      }),
                       decoration: InputDecoration(
                           hintText: "Email",
                           hintStyle: const TextStyle(color: Colors.black),
@@ -145,6 +144,7 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     TextFormField(
+                      controller: pass,
                       obscureText: obserText,
                       validator: (String? value) {
                         if (value == '') {
@@ -153,13 +153,7 @@ class _RegisterState extends State<Register> {
                         if (value!.length < 8) {
                           return "Quá ngắn";
                         }
-                        // return '';
                       },
-                      onChanged: ((value) {
-                        setState(() {
-                          password = value;
-                        });
-                      }),
                       decoration: InputDecoration(
                           hintText: "Password",
                           hintStyle: const TextStyle(color: Colors.black),
@@ -177,6 +171,7 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     TextFormField(
+                      controller: phone,
                       validator: (String? value) {
                         if (value == '') {
                           return "Không được bỏ trống";
@@ -184,13 +179,7 @@ class _RegisterState extends State<Register> {
                         if (value!.length < 10) {
                           return "Phải có 10 số OK !";
                         }
-                        // return '';
                       },
-                      onChanged: ((value) {
-                        setState(() {
-                          phone = value;
-                        });
-                      }),
                       decoration: InputDecoration(
                           hintText: "Phone",
                           hintStyle: const TextStyle(color: Colors.black),

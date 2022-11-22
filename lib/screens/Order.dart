@@ -56,11 +56,16 @@ class _OrderState extends State<Order> {
               });
               provider.removeAllItem();
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Mua thàng công thành công")));
+                  const SnackBar(
+                    content: Text("Mua thàng công thành công"),
+                    backgroundColor: Colors.green,
+                    ));
               Navigator.pushNamed(context, '/Order');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Giỏ hàng trống")));
+                  const SnackBar(content: Text("Giỏ hàng trống"),
+                  backgroundColor: Colors.red,
+                  ));
             }
           }),
           child: const Text(

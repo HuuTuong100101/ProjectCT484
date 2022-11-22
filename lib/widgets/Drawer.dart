@@ -11,9 +11,10 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-         UserAccountsDrawerHeader(
-          currentAccountPicture:const CircleAvatar(
-            backgroundImage: NetworkImage("https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/81813335_2173362772960111_8653992229628542976_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=NeLppJAPJJAAX8SRiva&_nc_ht=scontent.fsgn13-2.fna&oh=00_AfAdsYEIGSKF4xmYMcr331KCjUSUBIVTSelegG2DILgMMg&oe=639AA9D8"),
+        UserAccountsDrawerHeader(
+          currentAccountPicture: const CircleAvatar(
+            backgroundImage: NetworkImage(
+                "https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/81813335_2173362772960111_8653992229628542976_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=NeLppJAPJJAAX8SRiva&_nc_ht=scontent.fsgn13-2.fna&oh=00_AfAdsYEIGSKF4xmYMcr331KCjUSUBIVTSelegG2DILgMMg&oe=639AA9D8"),
           ),
           accountName: Text(
             username,
@@ -39,7 +40,7 @@ class DrawerWidget extends StatelessWidget {
           }),
           child: const ListTile(
             leading: Icon(Icons.home),
-            title: Text("Home"),
+            title: Text("Trang chủ"),
           ),
         ),
         ElevatedButton(
@@ -51,7 +52,7 @@ class DrawerWidget extends StatelessWidget {
           }),
           child: const ListTile(
             leading: Icon(Icons.people),
-            title: Text("Profile"),
+            title: Text("Thông tin cá nhân"),
           ),
         ),
         ElevatedButton(
@@ -63,7 +64,7 @@ class DrawerWidget extends StatelessWidget {
           }),
           child: const ListTile(
             leading: Icon(Icons.list),
-            title: Text("Orders"),
+            title: Text("Lịch sử mua hàng"),
           ),
         ),
         ElevatedButton(
@@ -75,7 +76,7 @@ class DrawerWidget extends StatelessWidget {
           }),
           child: const ListTile(
             leading: Icon(Icons.shopping_cart),
-            title: Text("Cart"),
+            title: Text("Giỏ hàng"),
           ),
         ),
         ElevatedButton(
@@ -83,11 +84,23 @@ class DrawerWidget extends StatelessWidget {
             backgroundColor: Colors.white, // Background color
           ),
           onPressed: (() {
-            FirebaseAuth.instance.signOut();
+            try {
+              FirebaseAuth.instance.signOut();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Đăng xuất thành công"),
+                backgroundColor: Colors.green,
+              ));
+              Navigator.pushReplacementNamed(context, '/Login');
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Đăng xuất lỗi"),
+                backgroundColor: Colors.green,
+              ));
+            }
           }),
           child: const ListTile(
             leading: Icon(Icons.logout),
-            title: Text("Logout"),
+            title: Text("Đăng xuất"),
           ),
         )
       ],

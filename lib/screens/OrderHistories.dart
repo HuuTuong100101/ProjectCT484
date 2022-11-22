@@ -22,7 +22,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/Home');
             },
           ),
           actions: [

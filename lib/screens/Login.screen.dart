@@ -30,7 +30,8 @@ class _LoginState extends State<Login> {
         content: Text("Đăng nhập thành công"),
         backgroundColor: Colors.green,
       ));
-    } on PlatformException {
+       Navigator.pushReplacementNamed(context, '/Home');
+    } on PlatformException{
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Tài khoản hoặc mật khẩu không đúng !"),
           backgroundColor: Colors.red,

@@ -137,7 +137,7 @@ class _ProfileState extends State<Profile> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: const Text(
-                              "Edit Profile",
+                              "Chỉnh sửa",
                               style: TextStyle(fontSize: 17),
                             ),
                           ))

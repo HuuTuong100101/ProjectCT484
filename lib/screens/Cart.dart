@@ -38,7 +38,7 @@ class _CartState extends State<Cart> {
         ],
       ),
 
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 50,
         child: ElevatedButton(
           onPressed: (() {

@@ -13,7 +13,7 @@ class AllProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Products"),
+        title: const Text("Tất cả sản phẩm"),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
