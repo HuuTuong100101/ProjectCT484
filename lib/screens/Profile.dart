@@ -9,6 +9,7 @@ class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
+
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
@@ -37,112 +38,114 @@ class _ProfileState extends State<Profile> {
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: const [
-                  CircleAvatar(
-                    maxRadius: 60,
-                    backgroundImage: NetworkImage(
-                        "https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/81813335_2173362772960111_8653992229628542976_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=NeLppJAPJJAAX8SRiva&_nc_ht=scontent.fsgn13-2.fna&oh=00_AfAdsYEIGSKF4xmYMcr331KCjUSUBIVTSelegG2DILgMMg&oe=639AA9D8"),
-                  )
-                ],
-              ),
-            ),
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("Users")
                   .doc(FirebaseAuth.instance.currentUser?.uid)
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
-                // if (snapshot.connectionState == ConnectionState.done) {
                 if (!snapshot.hasData) return const Text('Loading...');
-                return SizedBox(
-                  height: 250,
-                  width: double.infinity,
-                  // child: Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Name"),
-                              Text(snapshot.data["UserName"])
-                            ],
-                          ),
-                        ),
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          CircleAvatar(
+                            maxRadius: 60,
+                            backgroundImage: AssetImage('assets/images/account.png'),
+                          )
+                        ],
                       ),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Email"),
-                              Text(snapshot.data["UserEmail"])
-                            ],
-                          ),
-                        ),
-                      ),
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text("Phone"),
-                              Text(snapshot.data["Phone"])
-                            ],
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: (() {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: ((context) => EditProfile(
-                                      UserName: snapshot.data["UserName"],
-                                      Phone: snapshot.data["Phone"],
-                                    ))));
-                          }),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: const Text(
-                              "Chỉnh sửa",
-                              style: TextStyle(fontSize: 17),
+                    ),
+                    SizedBox(
+                      height: 250,
+                      width: double.infinity,
+                      // child: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          ))
-                    ],
-                  ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Name"),
+                                  Text(snapshot.data["UserName"])
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Email"),
+                                  Text(snapshot.data["UserEmail"])
+                                ],
+                              ),
+                            ),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)),
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text("Phone"),
+                                  Text(snapshot.data["Phone"])
+                                ],
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                              onPressed: (() {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) => EditProfile(
+                                          UserName: snapshot.data["UserName"],
+                                          Phone: snapshot.data["Phone"],
+                                        ))));
+                              }),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: const Text(
+                                  "Chỉnh sửa",
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ))
+                        ],
+                      ),
+                    ),
+                  ],
                 );
               },
             )

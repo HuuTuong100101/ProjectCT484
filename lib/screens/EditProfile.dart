@@ -6,12 +6,14 @@ import 'package:goldshop/widgets/Button.dart';
 // ignore: unnecessary_import
 import 'package:flutter/services.dart';
 
-
 // ignore: must_be_immutable
 class EditProfile extends StatefulWidget {
   String UserName;
   String Phone;
-  EditProfile({super.key, required this.Phone, required this.UserName});
+  EditProfile(
+      {super.key,
+      required this.Phone,
+      required this.UserName,});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -31,13 +33,13 @@ class _EditProfileState extends State<EditProfile> {
         FirebaseFirestore.instance
             .collection("Users")
             .doc(FirebaseAuth.instance.currentUser?.uid)
-            .update({"UserName": widget.UserName ,"Phone": widget.Phone});
+            .update({"UserName": widget.UserName, "Phone": widget.Phone,});
         ScaffoldMessenger.of(context)
             // ignore: prefer_const_constructors
             .showSnackBar(SnackBar(
-              content: const Text("Cập nhật thành công !"),
-              backgroundColor: Colors.green,
-              ));
+          content: const Text("Cập nhật thành công !"),
+          backgroundColor: Colors.green,
+        ));
         Navigator.pop(context);
       } on FirebaseAuthException catch (e) {
         // ignore: unused_local_variable
@@ -45,9 +47,9 @@ class _EditProfileState extends State<EditProfile> {
         ScaffoldMessenger.of(context)
             // ignore: prefer_const_constructors
             .showSnackBar(SnackBar(
-              content: const Text("Thất bại!"),
-              backgroundColor: Colors.red,
-            ));
+          content: const Text("Thất bại!"),
+          backgroundColor: Colors.red,
+        ));
       }
     }
   }
@@ -88,7 +90,7 @@ class _EditProfileState extends State<EditProfile> {
                       "Chỉnh sửa thông tin",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.lightBlue,
+                        color: Colors.red,
                         fontWeight: FontWeight.bold,
                       ),
                     )
@@ -96,7 +98,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               Container(
-                height: 200,
+                height: 300,
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(

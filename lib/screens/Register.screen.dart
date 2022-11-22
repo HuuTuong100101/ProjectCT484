@@ -41,6 +41,7 @@ class _RegisterState extends State<Register> {
           "UserId": us.user?.uid,
           "UserEmail": email.text,
           "Phone": phone.text,
+          "UserImage": 'assets/images/account.png'
         });
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

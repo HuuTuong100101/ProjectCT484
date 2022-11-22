@@ -71,7 +71,9 @@ class _HomeState extends State<Home> {
               if (!snapshot.hasData) return const Text("Loading...");
               return DrawerWidget(
                   username: snapshot.data["UserName"],
-                  email: snapshot.data["UserEmail"]);
+                  email: snapshot.data["UserEmail"], 
+                  Phone: snapshot.data["Phone"],
+              );
             }),
       ),
       appBar: AppBar(

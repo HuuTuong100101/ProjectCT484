@@ -5,16 +5,22 @@ import 'package:flutter/material.dart';
 class DrawerWidget extends StatelessWidget {
   final String username;
   final String email;
-  const DrawerWidget({super.key, required this.username, required this.email});
+  // ignore: non_constant_identifier_names
+  final String Phone;
+  const DrawerWidget(
+      {super.key,
+      required this.username,
+      required this.email,
+      // ignore: non_constant_identifier_names
+      required this.Phone});
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         UserAccountsDrawerHeader(
-          currentAccountPicture: const CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.6435-9/81813335_2173362772960111_8653992229628542976_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=NeLppJAPJJAAX8SRiva&_nc_ht=scontent.fsgn13-2.fna&oh=00_AfAdsYEIGSKF4xmYMcr331KCjUSUBIVTSelegG2DILgMMg&oe=639AA9D8"),
+          currentAccountPicture:const CircleAvatar(
+            backgroundImage: AssetImage('assets/images/account.png'),
           ),
           accountName: Text(
             username,
