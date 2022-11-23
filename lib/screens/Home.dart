@@ -21,8 +21,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   // ignore: non_constant_identifier_names
-  final Stream<QuerySnapshot> Products =
-      FirebaseFirestore.instance.collection('Products').where("State", isEqualTo: "1").snapshots();
+  final Stream<QuerySnapshot> Products = FirebaseFirestore.instance
+      .collection('Products')
+      .where("State", isEqualTo: "1")
+      .snapshots();
   // ignore: non_constant_identifier_names
   final Stream<QuerySnapshot> Categories =
       FirebaseFirestore.instance.collection('Categories').snapshots();
@@ -51,17 +53,16 @@ class _HomeState extends State<Home> {
       key: _key,
       drawer: Drawer(
         child: StreamBuilder(
-            stream: FirebaseFirestore
-              .instance
-              .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser?.uid)
-              .snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) return const Text("Loading...");
               return DrawerWidget(
-                  username: snapshot.data["UserName"],
-                  email: snapshot.data["UserEmail"], 
-                  Phone: snapshot.data["Phone"],
+                username: snapshot.data["UserName"],
+                email: snapshot.data["UserEmail"],
+                Phone: snapshot.data["Phone"],
               );
             }),
       ),

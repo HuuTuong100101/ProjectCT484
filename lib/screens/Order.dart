@@ -115,7 +115,7 @@ class _OrderState extends State<Order> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Tiền tiền"),
+                            const Text("Tổng tiền"),
                             Text("\$ ${(total - total * 5 / 100) + 10}")
                           ],
                         )

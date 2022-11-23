@@ -43,10 +43,15 @@ class _OrderHistoryState extends State<OrderHistory> {
                     }
                   });
                    ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text("Xóa thành công")));
+                      .showSnackBar(const SnackBar(
+                        content: Text("Xóa thành công"),
+                        backgroundColor: Colors.green,));
                 } catch (e) {
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text("Lỗi")));
+                      .showSnackBar(const SnackBar(
+                        content: Text("Lỗi"),
+                        backgroundColor: Colors.red,
+                      ));
                 }
               },
               child: const Text("Delete All"),
@@ -119,13 +124,15 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(const SnackBar(
                                                         content: Text(
-                                                            "Xóa đơn hàng thành công")));
+                                                            "Xóa đơn hàng thành công"),
+                                                        backgroundColor: Colors.green,));
                                               } catch (e) {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                         const SnackBar(
                                                             content:
-                                                                Text("Lỗi")));
+                                                                Text("Lỗi"),
+                                                            backgroundColor: Colors.red,));
                                               }
                                             },
                                             child: const Icon(Icons.delete))
