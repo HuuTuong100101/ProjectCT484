@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
             }),
       ),
       appBar: AppBar(
-        title: const Text('Gold Shop'),
+        title: const Text('Shopping'),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
